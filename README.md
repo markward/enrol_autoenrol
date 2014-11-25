@@ -18,7 +18,14 @@ enrolment it will be (ie something other than student).
 Changelog
 **********
 
+v0.91 - Bug Fix - Filtering was being bypassed when enrolling on site-login
 v0.9 - Beta release
+
+Install
+**********
+
+Copy the plugin directory "autoenrol" into moodle\enrol. 
+Check admin notifications to install.
 
 Maintainer
 **********
