@@ -17,6 +17,7 @@ enrolment it will be (ie something other than student).
 
 Changelog
 **********
+v1.1  - Minor update. Improved instance configuration form compatability with Moodle 2.5
 v1.0  - Stable release. New config option to "Add instance to new courses"
 v0.91 - Bug Fix - Filtering was being bypassed when enrolling on site-login
 v0.9 - Beta release
