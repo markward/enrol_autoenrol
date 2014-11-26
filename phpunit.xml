@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="phpunit.xsd">
+    <testsuites>
+        <testsuite name="mod_classroom">
+            <directory suffix="_test.php">enrol/autoenrol/tests/</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <log type="junit" target="logs/logfile.xml"/>
+        <log type="coverage-clover" target="logs/coverage.xml"/>
+        <log type="coverage-html" target="logs/coverage" charset="UTF-8"/>
+    </logging>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">enrol/autoenrol/</directory>
+            <exclude>
+                <directory>enrol/autoenrol/tests/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
