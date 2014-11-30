@@ -19,6 +19,7 @@ relating to the plugin which should be reviewed through Moodle's "Define Roles" 
 Changelog
 **********
 v1.3   - Release for Moodle 2.6, 2.7 and 2.8
+           Groups now identified by group idnumber instead of name (so feel free to rename groups!)
 v1.2   - New functionality and tweaks:
            It is now possible to add multiple instances to a single course.
            Added an option to give instance a custom label.
