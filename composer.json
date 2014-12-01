@@ -1,0 +1,40 @@
+{
+  "name": "markward/enrol_autoenrol",
+  "description": "",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Mark Ward",
+      "email": "me@moodlemark.com",
+      "homepage": "http://www.moodlemark.com/",
+      "role": "Developer"
+    }
+  ],
+  "licence": "GPL-3.0+",
+  "require-dev": {
+    "covex-nn/phpcb": "1.*",
+    "moodlehq/moodle-local_codechecker": "*",
+    "phing/phing": "2.*",
+    "phpdocumentor/phpdocumentor": "2.*",
+    "phploc/phploc": "2.*",
+    "phpunit/phpunit": "3.*",
+    "squizlabs/php_codesniffer": "1.*",
+    "zerkalica/phpuml": "*@dev"
+  },
+  "require": {
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "moodlehq/moodle-local_codechecker",
+        "version": "v2.3.2",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/moodlehq/moodle-local_codechecker",
+          "reference": "tags/v2.3.2"
+        }
+      }
+    }
+  ]
+}

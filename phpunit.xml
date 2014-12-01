@@ -9,8 +9,12 @@
     </testsuites>
     <logging>
         <log type="junit" target="logs/logfile.xml"/>
+<!-- Code coverage cannot be analysed unless this plugin is installed within a full
+     Moodle installation. This is due to scripts requiring files from elsewhere in
+     the Moodle codebase.
         <log type="coverage-clover" target="logs/coverage.xml"/>
         <log type="coverage-html" target="logs/coverage" charset="UTF-8"/>
+-->
     </logging>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
