@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="moodle-enrol_autoenrol" default="build">
+    <property name="srcdir" value="enrol"/>
+    <property name="logdir" value="logs"/>
+    <property name="codedir" value="code-browser"/>
+    <property name="apidir" value="api"/>
+    <property name="vendordir" value="vendor/bin"/>
+
+    <target name="clean">
+        <delete dir="${logdir}"/>
+        <delete dir="${codedir}"/>
+        <delete dir="${apidir}"/>
+    </target>
+
+    <target name="prepare" depends="clean">
+        <mkdir dir="${logdir}"/>
+        <mkdir dir="${codedir}"/>
+        <mkdir dir="${apidir}"/>
+    </target>
+
+    <target name="phpunit" depends="prepare">
+        <exec executable="${vendordir}/phpunit" logoutput="/dev/stdout">
+            <arg value="-c"/>
+            <arg file="phpunit.xml"/>
+        </exec>
+    </target>
+
+    <target name="codesniffer" depends="prepare">
+        <phpcodesniffer
+                standard="vendor/moodlehq/moodle-local_codechecker/moodle/ruleset.xml"
+                showSniffs="true"
+                showWarnings="true">
+            <fileset dir="${srcdir}">
+                <include name="**/*.php"/>
+                <include name="*.php"/>
+                <exclude name="**/tests/**"/>
+            </fileset>
+            <formatter type="checkstyle" outfile="${logdir}/checkstyle.xml"/>
+            <formatter type="full" outfile="${logdir}/codesniffer.txt"/>
+            <formatter type="full" usefile="false"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="phploc" depends="prepare">
+        <exec executable="${vendordir}/phploc">
+            <arg value="--count-tests"/>
+            <arg value="--log-csv"/>
+            <arg file="${logdir}/phploc.csv"/>
+            <arg file="${srcdir}"/>
+        </exec>
+    </target>
+
+    <target name="phpdepend" depends="prepare">
+        <phpdepend>
+            <fileset dir="${srcdir}">
+                <include name="**/*.php"/>
+                <include name="*.php"/>
+                <exclude name="**/tests/**"/>
+            </fileset>
+            <logger type="jdepend-xml" outfile="${logdir}/jdepend.xml"/>
+            <logger type="jdepend-chart" outfile="${logdir}/dependencies.svg"/>
+            <logger type="overview-pyramid" outfile="${logdir}/overview-pyramid.svg"/>
+        </phpdepend>
+    </target>
+
+    <target name="messdetector" depends="prepare">
+        <phpmd rulesets="codesize,design,unusedcode">
+            <fileset dir="${srcdir}">
+                <include name="**/*.php"/>
+                <include name="*.php"/>
+                <exclude name="**/tests/**"/>
+            </fileset>
+            <formatter type="xml" outfile="${logdir}/pmd.xml"/>
+        </phpmd>
+    </target>
+
+    <target name="cpd" depends="prepare">
+        <phpcpd minLines="3" minTokens="40">
+            <fileset dir="${srcdir}">
+                <include name="**/*.php"/>
+                <include name="*.php"/>
+            </fileset>
+            <formatter type="pmd" outfile="${logdir}/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+
+    <target name="analysis" depends="codesniffer,phploc,phpdepend,messdetector,cpd"/>
+
+    <target name="codebrowser" depends="analysis,phpunit">
+        <copy file="${logdir}/checkstyle.xml" tofile="${logdir}/Checkstyle.xml"/>
+        <exec executable="${vendordir}/phpcb" passthru="true">
+            <arg value="--log"/>
+            <arg path="${logdir}"/>
+            <arg value="--source"/>
+            <arg path="${srcdir}"/>
+            <arg value="--output"/>
+            <arg path="${codedir}"/>
+        </exec>
+    </target>
+
+    <target name="api" depends="prepare">
+        <exec executable="${vendordir}/phpdoc" passthru="true">
+            <arg value="--directory"/>
+            <arg path="${srcdir}"/>
+            <arg value="--target"/>
+            <arg path="${apidir}"/>
+            <arg value="--template"/>
+            <arg value="responsive"/>
+            <arg value="--parseprivate"/>
+            <arg value="--sourcecode"/>
+            <arg value="--no-interaction"/>
+        </exec>
+        <exec executable="${vendordir}/phpdoc" passthru="true">
+            <arg value="--directory"/>
+            <arg path="${srcdir}"/>
+            <arg value="--target"/>
+            <arg path="${apidir}"/>
+            <arg value="--template"/>
+            <arg value="checkstyle"/>
+            <arg value="--parseprivate"/>
+            <arg value="--sourcecode"/>
+            <arg value="--no-interaction"/>
+        </exec>
+    </target>
+
+    <target name="quality" depends="analysis,codebrowser"/>
+
+    <target name="build" depends="phpunit,quality,api"/>
+
+    <target name="deploy">
+        <propertyprompt propertyName="dest" defaultValue="/var/www/html/" promptText="Enter your web root for deployment"
+                        useExistingValue="true"/>
+        <exec executable="cp" passthru="true" dir="${srcdir}">
+            <arg value="-LfR"/>
+            <arg value="*"/>
+            <arg path="${dest}/enrol/"/>
+        </exec>
+    </target>
+</project>
