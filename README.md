@@ -19,6 +19,7 @@ relating to the plugin which should be reviewed through Moodle's "Define Roles" 
 
 * v1.3.1
   * Tweaks to the Readme to improve readability and installation instructions.
+  * Added new capability to control whether user can enable or disable instances.
 * v1.3
   * Release for Moodle 2.6, 2.7 and 2.8.
   * Groups now identified by group idnumber instead of name (so feel free to rename groups!).
